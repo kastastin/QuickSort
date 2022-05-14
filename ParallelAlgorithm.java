@@ -18,7 +18,7 @@ public class ParallelAlgorithm {
         for (int size : arraySizes) {
             int[] initialArray = new int[size];
             for (int i = 0; i < size; i++) 
-                initialArray[i] = (int) Math.round((Math.random() * 100));
+                initialArray[i] = (int) Math.round((Math.random() * 10000));
             
             long time = 0;
             for (int i = 0; i < nExperiments; i++) {
@@ -51,7 +51,7 @@ public class ParallelAlgorithm {
             System.out.print("\nInitial array: ");
 
         for (int i = 0; i < size; i++) {
-            initialArray[i] = (int) Math.round((Math.random() * 100));
+            initialArray[i] = (int) Math.round((Math.random() * 10000));
             if (isShowArray)
                 System.out.printf(initialArray[i] + " | ");
         }
