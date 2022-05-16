@@ -1,13 +1,15 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Algorithm {
 
     public static void main(String [] args) {
-        // demonstrateQuickSort(true);
+        // demonstrateQuickSort(false);
         sizeExperiment(5);
     }
 
@@ -18,8 +20,9 @@ public class Algorithm {
         for (int size : arraySizes) {
             int[] initialArray = new int[size];
             for (int i = 0; i < size; i++) 
-                initialArray[i] = (int) Math.round((Math.random() * 10000));
-            
+                initialArray[i] = i;
+            shuffle(initialArray);
+
             long time = 0;
             for (int i = 0; i < nExperiments; i++) {
                 long currTime = System.nanoTime();
@@ -53,10 +56,11 @@ public class Algorithm {
         if (!isShowTime)
             System.out.println("Initial array: ");
 
-        for (int i = 0; i < initialArray.length; i++) {
-            initialArray[i] = (int) Math.round((Math.random() * 10000));
+        for (int i = 0; i < initialArray.length; i++)
+            initialArray[i] = i;
+        shuffle(initialArray);
+        for (int i = 0; i < initialArray.length; i++) 
             initialArrayStr += initialArray[i] + " | ";
-        }
 
         if (!isShowTime)
             System.out.println(initialArrayStr + "\n");
@@ -112,5 +116,13 @@ public class Algorithm {
             quickSort(array, left, pivotIndex - 1);
             quickSort(array, pivotIndex + 1, right);
         }       
+    }
+
+    private static void shuffle(int[] array) {
+        Random random = ThreadLocalRandom.current();
+        for (int i = array.length - 1; i > 0; i--) {
+            int randomIndex = random.nextInt(i + 1);
+            swap(array, randomIndex, i); 
+        }
     }
 }

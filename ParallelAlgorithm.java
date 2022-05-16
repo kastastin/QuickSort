@@ -1,7 +1,9 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class ParallelAlgorithm {
@@ -18,7 +20,8 @@ public class ParallelAlgorithm {
         for (int size : arraySizes) {
             int[] initialArray = new int[size];
             for (int i = 0; i < size; i++) 
-                initialArray[i] = (int) Math.round((Math.random() * 10000));
+                initialArray[i] = i;
+            shuffle(initialArray);
             
             long time = 0;
             for (int i = 0; i < nExperiments; i++) {
@@ -46,9 +49,9 @@ public class ParallelAlgorithm {
 
     private static void demonstrateAlgorithm(int size, boolean isShowArray) {
         int[] initialArray = new int[size];
-
         for (int i = 0; i < size; i++) 
-            initialArray[i] = (int) Math.round((Math.random() * 10000));
+            initialArray[i] = i;
+        shuffle(initialArray);
 
         ForkJoinTask quickSort = new ForkJoinTask(initialArray);
         long time = System.nanoTime();
@@ -69,5 +72,15 @@ public class ParallelAlgorithm {
         }
 
         System.out.printf("\n\nSize: %d | Time: %d ms\n\n", size, (System.nanoTime() - time) / 1000000);
+    }
+
+    private static void shuffle(int[] array) {
+        Random random = ThreadLocalRandom.current();
+        for (int i = array.length - 1; i > 0; i--) {
+            int randomIndex = random.nextInt(i + 1);
+            int temp = array[randomIndex];
+            array[randomIndex] = array[i];
+            array[i] = temp;
+        }
     }
 }
