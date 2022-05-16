@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class ParallelAlgorithm {
 
     public static void main(String[] args) {
-        // demonstrateAlgorithm(13, true);
+        // demonstrateAlgorithm(500000, true);
         sizeExperiment(5);
     }
 
@@ -47,14 +47,8 @@ public class ParallelAlgorithm {
     private static void demonstrateAlgorithm(int size, boolean isShowArray) {
         int[] initialArray = new int[size];
 
-        if (isShowArray)
-            System.out.print("\nInitial array: ");
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) 
             initialArray[i] = (int) Math.round((Math.random() * 10000));
-            if (isShowArray)
-                System.out.printf(initialArray[i] + " | ");
-        }
 
         ForkJoinTask quickSort = new ForkJoinTask(initialArray);
         long time = System.nanoTime();
@@ -63,8 +57,13 @@ public class ParallelAlgorithm {
         pool.shutdown();
 
         if (isShowArray) {
-            System.out.print("\n\nSorted array: ");
-            for (int i = 0; i < initialArray.length; i++) {
+            System.out.print("\n\nFirst 5 elements sorted array: ");
+            for (int i = 0; i < 5; i++) {
+                System.out.printf(initialArray[i] + " | ");
+            }
+
+            System.out.print("\n\nLast 5 elements sorted array: ");
+            for (int i = initialArray.length - 5; i < initialArray.length; i++) {
                 System.out.printf(initialArray[i] + " | ");
             }
         }
