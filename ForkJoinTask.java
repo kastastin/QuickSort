@@ -24,26 +24,19 @@ public class ForkJoinTask extends RecursiveAction {
     }
 
     private int partition(int[] array, int left, int right) {
-        int pivotIndex = array[left];
-        int low = left - 1;
-        int high = right + 1;
-        while (true) {
-            do {
+        int pivotIndex = (left + right) / 2;
+        swap(array, pivotIndex, right);
+        int low = left;
+
+        for (int i = left; i <= right - 1 ; i++) {
+            if (array[i] <= array[right]) {
+                swap (array, i, low);
                 low++;
             }
-            while (array[low] < pivotIndex);
-
-            do {
-                high--;
-            }
-            while (array[high] > pivotIndex);
-
-            if (low >= high) {
-                return high;
-            }
-
-            swap(array, low, high);
         }
+
+        swap (array, low, right);
+        return low;
     }
 
     @Override

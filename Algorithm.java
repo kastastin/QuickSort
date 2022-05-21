@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class Algorithm {
 
     public static void main(String [] args) {
-        // demonstrateQuickSort(false);
+        // demonstrateQuickSort(true);
         sizeExperiment(5);
     }
 
@@ -18,19 +18,19 @@ public class Algorithm {
         Map<Integer, Long> times = new HashMap<>();
 
         for (int size : arraySizes) {
-            int[] initialArray = new int[size];
-            for (int i = 0; i < size; i++) 
-                initialArray[i] = i;
-            shuffle(initialArray);
-
-            long time = 0;
+            long allTime = 0;
             for (int i = 0; i < nExperiments; i++) {
-                long currTime = System.nanoTime();
+                int[] initialArray = new int[size];
+                for (int j = 0; j < size; j++) 
+                initialArray[j] = j;
+                shuffle(initialArray);
+
+                long time = System.nanoTime();
                 quickSort(initialArray, 0, initialArray.length - 1);
-                time += System.nanoTime() - currTime;
+                allTime += (System.nanoTime() - time) / 1000000;
             }
-            time = time / nExperiments;
-            times.put(size, time / 1000000);       
+            allTime /= nExperiments;
+            times.put(size, allTime);       
         }
 
         List<Integer> keys = times.keySet().stream().sorted().collect(Collectors.toList());
@@ -59,11 +59,11 @@ public class Algorithm {
         for (int i = 0; i < initialArray.length; i++)
             initialArray[i] = i;
         shuffle(initialArray);
-        for (int i = 0; i < initialArray.length; i++) 
-            initialArrayStr += initialArray[i] + " | ";
 
         if (!isShowTime)
             System.out.println(initialArrayStr + "\n");
+            for (int i = 0; i < initialArray.length; i++) 
+                initialArrayStr += initialArray[i] + " | ";
 
         long time = System.nanoTime();
         quickSort(initialArray, 0, initialArray.length - 1);
@@ -94,18 +94,16 @@ public class Algorithm {
         int pivotIndex = (left + right) / 2;
         swap(array, pivotIndex, right);
         int low = left;
-        pivotIndex = right;
 
         for (int i = left; i <= right - 1 ; i++) {
-            if (array[i] <= array[pivotIndex]) {
+            if (array[i] <= array[right]) {
                 swap (array, i, low);
                 low++;
             }
         }
 
-        swap (array, low, pivotIndex);
-        pivotIndex = low;
-        return pivotIndex;
+        swap (array, low, right);
+        return low;
     }
 
     private static void quickSort(int[] array, int left, int right) {
